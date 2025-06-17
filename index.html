@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Nota PAU</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+    input { width: 80px; margin: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Calculadora Nota PAU (Cataluña)</h1>
+  <p>Introduce tus notas:</p>
+  <label>Fase general (media de 4 asignaturas): </label>
+  <input type="number" id="faseGeneral" step="0.01" min="0" max="10"><br>
+  <label>Asignatura específica 1 (nota × ponderación): </label>
+  <input type="number" id="especifica1" step="0.01" min="0" max="14"><br>
+  <label>Asignatura específica 2 (nota × ponderación): </label>
+  <input type="number" id="especifica2" step="0.01" min="0" max="14"><br>
+  <br>
+  <button onclick="calcularNota()">Calcular nota final</button>
+  <h2 id="resultado"></h2>
+
+  <script>
+    function calcularNota() {
+      const faseGeneral = parseFloat(document.getElementById('faseGeneral').value);
+      const espec1 = parseFloat(document.getElementById('especifica1').value);
+      const espec2 = parseFloat(document.getElementById('especifica2').value);
+      if (isNaN(faseGeneral) || isNaN(espec1) || isNaN(espec2)) {
+        alert("Por favor, rellena todos los campos");
+        return;
+      }
+      const notaFinal = (faseGeneral * 0.6 + espec1 + espec2).toFixed(2);
+      document.getElementById('resultado').innerText = "Tu nota final es: " + notaFinal;
+    }
+  </script>
+</body>
+</html>
