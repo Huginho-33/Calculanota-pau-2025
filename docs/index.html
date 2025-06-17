@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -36,6 +37,9 @@
 
   <label>🎯 Nota que necesitas para entrar a la carrera:</label>
   <input type="number" id="notaDeseada" step="0.01" min="0" max="14" />
+
+  <label>📚 Nota media de Bachillerato (1º y 2º):</label>
+  <input type="number" id="bach" step="0.01" min="0" max="10" />
 
   <h2>📝 Fase General</h2>
   <label>Catalán:</label>
@@ -77,6 +81,7 @@
   <script>
     function calcularNota() {
       const deseada = parseFloat(document.getElementById("notaDeseada").value);
+      const bach = parseFloat(document.getElementById("bach").value);
       const cat = parseFloat(document.getElementById("cat").value);
       const cas = parseFloat(document.getElementById("cas").value);
       const ext = parseFloat(document.getElementById("ext").value);
@@ -88,13 +93,13 @@
       const pond2 = parseFloat(document.getElementById("pond2").value);
 
       // Validar campos
-      if ([deseada, cat, cas, ext, hist, mod, esp1, esp2].some(isNaN)) {
+      if ([deseada, bach, cat, cas, ext, hist, mod, esp1, esp2].some(isNaN)) {
         alert("Por favor, rellena todos los campos correctamente.");
         return;
       }
 
       const faseGeneral = (cat + cas + ext + hist + mod) / 5;
-      const notaAcceso = 0.6 * 7 + 0.4 * faseGeneral; // asumimos media bachillerato = 7
+      const notaAcceso = 0.6 * bach + 0.4 * faseGeneral;
       const notaAdmisión = notaAcceso + esp1 * pond1 + esp2 * pond2;
 
       const resultado = notaAdmisión.toFixed(2);
