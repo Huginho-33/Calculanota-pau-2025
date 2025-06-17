@@ -1,38 +1,112 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora Nota PAU</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora Nota PAU Cataluña</title>
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; }
-    input { width: 80px; margin: 5px; }
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      transition: background-color 0.3s ease;
+    }
+    input, select {
+      margin: 5px 0;
+      padding: 5px;
+      width: 100%;
+    }
+    label {
+      font-weight: bold;
+    }
+    button {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    h2 {
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
   <h1>Calculadora Nota PAU (Cataluña)</h1>
-  <p>Introduce tus notas:</p>
-  <label>Fase general (media de 4 asignaturas): </label>
-  <input type="number" id="faseGeneral" step="0.01" min="0" max="10"><br>
-  <label>Asignatura específica 1 (nota × ponderación): </label>
-  <input type="number" id="especifica1" step="0.01" min="0" max="14"><br>
-  <label>Asignatura específica 2 (nota × ponderación): </label>
-  <input type="number" id="especifica2" step="0.01" min="0" max="14"><br>
+
+  <label>🎯 Nota que necesitas para entrar a la carrera:</label>
+  <input type="number" id="notaDeseada" step="0.01" min="0" max="14" />
+
+  <h2>📝 Fase General</h2>
+  <label>Catalán:</label>
+  <input type="number" id="cat" step="0.01" min="0" max="10" />
+  <label>Castellano:</label>
+  <input type="number" id="cas" step="0.01" min="0" max="10" />
+  <label>Lengua extranjera:</label>
+  <input type="number" id="ext" step="0.01" min="0" max="10" />
+  <label>Historia o Filosofía:</label>
+  <input type="number" id="hist" step="0.01" min="0" max="10" />
+  <label>Materia de modalidad (Ej. Matemáticas):</label>
+  <input type="number" id="mod" step="0.01" min="0" max="10" />
+
+  <h2>📘 Específica 1</h2>
+  <label>Nota:</label>
+  <input type="number" id="esp1" step="0.01" min="0" max="10" />
+  <label>Ponderación:</label>
+  <select id="pond1">
+    <option value="0.1">0.1</option>
+    <option value="0.15">0.15</option>
+    <option value="0.2">0.2</option>
+  </select>
+
+  <h2>📙 Específica 2</h2>
+  <label>Nota:</label>
+  <input type="number" id="esp2" step="0.01" min="0" max="10" />
+  <label>Ponderación:</label>
+  <select id="pond2">
+    <option value="0.1">0.1</option>
+    <option value="0.15">0.15</option>
+    <option value="0.2">0.2</option>
+  </select>
+
   <br>
   <button onclick="calcularNota()">Calcular nota final</button>
+
   <h2 id="resultado"></h2>
 
   <script>
     function calcularNota() {
-      const faseGeneral = parseFloat(document.getElementById('faseGeneral').value);
-      const espec1 = parseFloat(document.getElementById('especifica1').value);
-      const espec2 = parseFloat(document.getElementById('especifica2').value);
-      if (isNaN(faseGeneral) || isNaN(espec1) || isNaN(espec2)) {
-        alert("Por favor, rellena todos los campos");
+      const deseada = parseFloat(document.getElementById("notaDeseada").value);
+      const cat = parseFloat(document.getElementById("cat").value);
+      const cas = parseFloat(document.getElementById("cas").value);
+      const ext = parseFloat(document.getElementById("ext").value);
+      const hist = parseFloat(document.getElementById("hist").value);
+      const mod = parseFloat(document.getElementById("mod").value);
+      const esp1 = parseFloat(document.getElementById("esp1").value);
+      const pond1 = parseFloat(document.getElementById("pond1").value);
+      const esp2 = parseFloat(document.getElementById("esp2").value);
+      const pond2 = parseFloat(document.getElementById("pond2").value);
+
+      // Validar campos
+      if ([deseada, cat, cas, ext, hist, mod, esp1, esp2].some(isNaN)) {
+        alert("Por favor, rellena todos los campos correctamente.");
         return;
       }
-      const notaFinal = (faseGeneral * 0.6 + espec1 + espec2).toFixed(2);
-      document.getElementById('resultado').innerText = "Tu nota final es: " + notaFinal;
+
+      const faseGeneral = (cat + cas + ext + hist + mod) / 5;
+      const notaAcceso = 0.6 * 7 + 0.4 * faseGeneral; // asumimos media bachillerato = 7
+      const notaAdmisión = notaAcceso + esp1 * pond1 + esp2 * pond2;
+
+      const resultado = notaAdmisión.toFixed(2);
+      const output = document.getElementById("resultado");
+
+      output.innerText = `Tu nota final es: ${resultado}`;
+
+      if (resultado >= deseada) {
+        document.body.style.backgroundColor = "#d4edda"; // verde claro
+      } else {
+        document.body.style.backgroundColor = "#f8d7da"; // rojo claro
+      }
     }
   </script>
 </body>
